@@ -1,47 +1,78 @@
-import React, { useState } from 'react';
-import API from '../api';
-import './auth.css';
+import React, { useState } from "react";
+import "./Auth.css";
 
-const AuthForm = ({ mode = 'login', onAuth }) => {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const [error, setError] = useState('');
+const Auth = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
 
-  const handleChange = (e) => setForm({...form, [e.target.name]: e.target.value});
+  // ⚡️ Local backend ke liye:
+  
+  // ⚡️ Deployment ke baad yahan apna Render backend link daalna:
+  const BASE_URL = "https://crypto-backend-xyz.onrender.com";
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     try {
-      if (mode === 'login') {
-        const res = await API.post('/auth/login', { email: form.email, password: form.password });
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
-        onAuth && onAuth(res.data.user);
+      const endpoint = isLogin ? "login" : "register";
+      const res = await fetch(`${BASE_URL}/api/auth/${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      console.log("Response:", data);
+
+      if (res.ok) {
+        alert(isLogin ? "Login Successful" : "Registration Successful");
       } else {
-        const res = await API.post('/auth/register', form);
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
-        onAuth && onAuth(res.data.user);
+        alert(data.message || "Error occurred");
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Something went wrong');
+      console.error("Error:", err);
+      alert("Something went wrong!");
     }
   };
 
   return (
-    <div className="auth-card">
-      <h2>{mode === 'login' ? 'Login' : 'Register'}</h2>
-      {error && <div className="error">{error}</div>}
+    <div className="auth-container">
+      <h2>{isLogin ? "Login" : "Register"}</h2>
       <form onSubmit={handleSubmit}>
-        {mode === 'register' && (
-          <input name="name" value={form.name} onChange={handleChange} placeholder="Name" required />
+        {!isLogin && (
+          <input
+            type="text"
+            placeholder="Name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            required
+          />
         )}
-        <input name="email" value={form.email} onChange={handleChange} placeholder="Email" type="email" required />
-        <input name="password" value={form.password} onChange={handleChange} placeholder="Password" type="password" required />
-        <button type="submit" className="btn-primary">{mode === 'login' ? 'Login' : 'Create account'}</button>
+        <input
+          type="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          required
+        />
+        <button type="submit">{isLogin ? "Login" : "Register"}</button>
       </form>
+
+      <p>
+        {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+        <span onClick={() => setIsLogin(!isLogin)}>
+          {isLogin ? "Register" : "Login"}
+        </span>
+      </p>
     </div>
   );
 };
 
-export default AuthForm;
+export default Auth;
