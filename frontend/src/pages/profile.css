@@ -1,0 +1,15 @@
+.profile {
+  text-align: center;
+  padding: 30px;
+}
+.profile .card {
+  background: #fff;
+  display: inline-block;
+  padding: 20px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.profile h2 {
+  color: #6C5CE7;
+  margin-bottom: 20px;
+}

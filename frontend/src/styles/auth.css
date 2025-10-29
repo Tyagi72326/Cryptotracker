@@ -1,0 +1,9 @@
+.auth-card{
+  background: linear-gradient(180deg, #ffffff 0%, #f0f6ff 100%);
+  padding:20px;border-radius:12px;box-shadow:0 10px 30px rgba(16,24,40,0.06);
+  width:320px;
+}
+.auth-card h2{margin-bottom:12px;color:var(--primary);}
+.auth-card form{display:flex;flex-direction:column;gap:10px;}
+.auth-card input{padding:10px;border-radius:8px;border:1px solid #e6e9ef;}
+.auth-card .btn-primary{margin-top:8px;}

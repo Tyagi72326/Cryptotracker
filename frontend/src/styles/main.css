@@ -1,0 +1,30 @@
+:root{
+  --bg: #f5f7ff;
+  --primary: #6C5CE7;
+  --accent: #00b894;
+  --muted: #6b6b6b;
+}
+
+/* reset */
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,Arial;}
+
+body{
+  background: linear-gradient(90deg, #f8f9ff 0%, #fffdf7 100%);
+  color:#222;
+  min-height:100vh;
+}
+
+/* container reuse */
+.container{max-width:1100px;margin:0 auto;padding:20px;}
+.btn{cursor:pointer;border-radius:8px;padding:8px 14px;border:none;}
+.btn-primary{background:var(--primary);color:white;box-shadow:0 6px 18px rgba(108,92,231,0.18);}
+.btn-ghost{background:transparent;color:var(--primary);}
+
+/* nav */
+.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:transparent;}
+.brand{font-weight:700;color:var(--primary);text-decoration:none;font-size:1.2rem;}
+.nav-link{margin-right:12px;text-decoration:none;color:var(--primary);display:inline-flex;align-items:center;gap:6px}
+
+/* small utilities */
+.error{background:#ffdede;padding:8px;border-radius:6px;margin-bottom:8px;color:#8a1f1f;}
+.loader{padding:20px;text-align:center;}

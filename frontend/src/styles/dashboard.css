@@ -1,0 +1,9 @@
+.home-container{display:flex;gap:20px;padding:30px;align-items:center;justify-content:center;}
+.home-container .left{flex:1;padding:20px;}
+.home-container .right{flex:1;display:flex;align-items:center;justify-content:center;}
+.switcher button{padding:8px 12px;border-radius:8px;border:1px solid transparent;margin-right:6px;}
+.switcher .active{background:var(--primary);color:white;}
+@media (max-width:800px){
+  .home-container{flex-direction:column;padding:16px;}
+  .auth-card{width:100%;}
+}
