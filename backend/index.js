@@ -1,46 +1,57 @@
+// ------------------------------
+// 🌐 IMPORTS & INITIAL SETUP
+// ------------------------------
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const cron = require("node-cron");
-const axios = require("axios");
 
+// Load environment variables
 dotenv.config();
 
-// ✅ Initialize express first (this must come before app.use)
+// Initialize express app
 const app = express();
 
-// ✅ Middleware
-app.use(cors());
+// Middleware
 app.use(express.json());
+app.use(cors());
 
-// ✅ Import routes
+// ------------------------------
+// 🛠️ IMPORT ROUTES
+// ------------------------------
 const authRoutes = require("./routes/authRoutes");
-const coinsRoutes = require("./routes/coinsRoutes");
+const coinRoutes = require("./routes/coinsRoutes");
 const historyRoutes = require("./routes/historyRoutes");
 
-// ✅ Use routes after app is initialized
+// ------------------------------
+// 🔗 USE ROUTES
+// ------------------------------
 app.use("/api/auth", authRoutes);
-app.use("/api/coins", coinsRoutes);
+app.use("/api/coins", coinRoutes);
 app.use("/api/history", historyRoutes);
 
-// ✅ MongoDB connection
+// ------------------------------
+// ⚙️ DATABASE CONNECTION
+// ------------------------------
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB Error:", err));
+  .catch((err) => console.log("MongoDB Error:", err));
 
-// ✅ Cron job: Run every hour to store snapshot
-cron.schedule("0 * * * *", async () => {
-  console.log("⏱ Running hourly snapshot job...");
-  try {
-    await axios.post("http://localhost:5000/api/history");
-    console.log("✅ Snapshot saved successfully.");
-  } catch (err) {
-    console.error("❌ Snapshot job failed:", err.message);
-  }
-});
+// ------------------------------
+// 🕒 CRON JOB (auto import)
+// ------------------------------
+require("./scheduler"); // runs every hour (or every minute for testing)
 
-// ✅ Start server
+// ------------------------------
+// 🚀 START SERVER
+// ------------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
+
+// ------------------------------
+// 🧩 BASE ROUTE
+// ------------------------------
+app.get("/", (req, res) => {
+  res.send("✅ Crypto Tracker Backend Running Successfully!");
+});
